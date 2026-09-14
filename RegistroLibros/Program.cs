@@ -1,10 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using Radzen;
 using RegistroLibros.Components;
+using RegistroLibros.Context;
+using RegistroLibros.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+var connectionString = builder.Configuration.GetConnectionString("SqlConStr");
+
+builder.Services.AddDbContextFactory<Contexto>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<LibrosService>();
+
+builder.Services.AddRadzenComponents();
 
 var app = builder.Build();
 
